@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "431929695285",
+    "project_id": "cybersagedb",
+    "storage_bucket": "cybersagedb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431929695285:android:72f5f61f79ae04a184e57c",
+        "android_client_info": {
+          "package_name": "com.example.cybersage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASZXsqMYnoKhkq9MbOmlc5QIuEdHex3MQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
