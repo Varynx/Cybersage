@@ -17,7 +17,7 @@ currently being supported with security updates.
 Use this section to tell people how to report a vulnerability.
 
 As this is more of a privat project, it will not be expected for people to share vurnerabilites to us. But in case there is one, you can reach out to us via email.
-bloopfisch@gmail.com
+bloopfisch@gmail.com , or you can post on https://www.reddit.com/r/Cybersage/hot/
 
 Tell them where to go, how often they can expect to get an update on a
 reported vulnerability, what to expect if the vulnerability is accepted or
