@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"  # Specifies the package ecosystem, npm in this case
+    directory: "/"             # Location of package manifests (like package.json)
+    schedule:
+      interval: "weekly"       # Update frequency, can be "daily", "weekly", or "monthly"
