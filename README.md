@@ -17,4 +17,4 @@ samples, guidance on mobile development, and a full API reference.
 
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10293/badge)](https://www.bestpractices.dev/projects/10293)
 
-[![OpenSSF Scorecard](htt‌ps://api.securityscorecards.dev/projects/github.com/{owner}/{repo}/badge)](htt‌ps://securityscorecards.dev/viewer/?uri=github.com/{owner}/{repo})
+[![OpenSSF Scorecard](htt‌ps://api.securityscorecards.dev/projects/github.com/{Fiji}/{Cybersage}/badge)](htt‌ps://securityscorecards.dev/viewer/?uri=github.com/{Fiji}/{Cybersage})
