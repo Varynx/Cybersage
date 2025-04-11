@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDR6s5pRbfErVpOE3SoQ5rNkF2i0iXSwd8',
+    apiKey: '',
     appId: '1:431929695285:web:e3e163f56bdfa59f84e57c',
     messagingSenderId: '431929695285',
     projectId: 'cybersagedb',
@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyASZXsqMYnoKhkq9MbOmlc5QIuEdHex3MQ',
+    apiKey: '',
     appId: '1:431929695285:android:72f5f61f79ae04a184e57c',
     messagingSenderId: '431929695285',
     projectId: 'cybersagedb',
@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB5uT4EPUrnX2eR75VPZWzkUmL0AkwIdyQ',
+    apiKey: '',
     appId: '1:431929695285:ios:732f86ba45f1c5b684e57c',
     messagingSenderId: '431929695285',
     projectId: 'cybersagedb',
@@ -67,7 +67,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB5uT4EPUrnX2eR75VPZWzkUmL0AkwIdyQ',
+    apiKey: '',
     appId: '1:431929695285:ios:732f86ba45f1c5b684e57c',
     messagingSenderId: '431929695285',
     projectId: 'cybersagedb',
@@ -76,7 +76,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDR6s5pRbfErVpOE3SoQ5rNkF2i0iXSwd8',
+    apiKey: '',
     appId: '1:431929695285:web:f5ebd7a4dbfa51d284e57c',
     messagingSenderId: '431929695285',
     projectId: 'cybersagedb',
