@@ -1,7 +1,11 @@
+import 'package:cybersage/auth_service.dart';
+import 'package:cybersage/quiz_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/gestures.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,27 +15,34 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  //Controllers used to get input from the text input widgets
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  //Instance of Firebase firestore to interact with the firestore database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool _isLoading = false;
 
+  //Function in charge of storing Log in Info
   Future<void> _storeLoginData() async {
     setState(() {
       _isLoading = true;
     });
   
   try {
-      final String username = usernameController.text.trim();
-      final String password = passwordController.text.trim();
+      
+      //Trims whitespace in front of input
+      final String username = usernameController.text;
+      final String password = passwordController.text;
 
-      //Sets up formatting for the firebase in the 
+      //Sets up formatting for the firebase, and collects info
       await _firestore.collection('Login_Info').add({
         'username': username, //Stores Username
         'password': password, //Stores Password
-        'timestamp': FieldValue.serverTimestamp(),
+        'timestamp': FieldValue.serverTimestamp(), //Stores timestamp
       });
 
+      //Navigates to the quiz screen
       if (mounted) {
         Navigator.pushNamed(context, '/quiz');
       }
@@ -93,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
               TextField( 
                 controller: usernameController,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your username',
+                  hintText: 'Enter your email',
                   prefixIcon: Icon(Icons.person),
                 ),
                 style: const TextStyle(fontSize: 18),
@@ -119,7 +130,15 @@ class LoginPageState extends State<LoginPage> {
               const SizedBox(height: 40),
               
               ElevatedButton(
-                onPressed: _isLoading ? null : _storeLoginData,
+                onPressed: () async {
+                  _isLoading ? null : _storeLoginData;
+                  await AuthService().signin(
+                    email: usernameController.text, 
+                    password: passwordController.text, 
+                    context: context
+                  );
+                },
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -127,22 +146,49 @@ class LoginPageState extends State<LoginPage> {
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text('Login', style: TextStyle(fontSize: 20)),
-              ),
+              ), //Sign in button
               
               const SizedBox(height: 16),
               
-              // Help text for elderly users
-              const Text(
-                'Need help? Contact support or ask for assistance',
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
+
+              _signupLink(context),
+   
             ],
           ),
         ),
       ),
     );
   }
+
+Widget _signupLink(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 16),
+    child: RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        style: const TextStyle(fontSize: 16),
+        children: [
+          const TextSpan(
+            text: "No account? ",
+            style: TextStyle(color: Colors.black54),
+          ),
+          TextSpan(
+            text: "Sign Up",
+            style: const TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                Navigator.pushNamed(context, '/signup');
+              },
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
   @override
   void dispose() {
