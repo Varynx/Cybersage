@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 import 'quiz_page.dart'; 
-import 'package:flutter/material.dart';
+import 'signup.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 
 
@@ -76,6 +75,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginPage(),
         '/quiz': (context) => const QuizPage(),
+        '/signup': (context) => Signup(),
       },
     );
   }
