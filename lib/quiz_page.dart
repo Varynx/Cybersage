@@ -3,22 +3,24 @@ import 'package:flutter/material.dart';
 // List of cybersecurity quiz questions for seniors
 final List<Map<String, dynamic>> quizQuestions = [
   {
-    'question': 'What is "phishing"?',
+    'question': 'A pop-up window appears on your device while browsing the internet, claiming that your device is infected with a virus,' 
+    ' and to call the number on your screen to help remove the virus. Should you:',
     'options': [
-      'A hobby activity involving catching fish', 
-      'An attempt by scammers to trick you into giving personal information by pretending to be a trustworthy organization', 
+      'Call the number and follow their directions to help you remove the virus.', 
+      'Ignore and close the message.', 
       'A computer virus that damages your files', 
       'A method of fixing computer problems remotely'
     ],
     'correctAnswerIndex': 1,
   },
   {
-    'question': 'If you receive an email from your bank asking you to click a link to verify your account information, what should you do?',
+    'question': '5.	You received an email claiming that you have won free healthcare as part of a giveaway run by your insurance company. '
+    ' To claim the offer, you must log in to your account and click accept. Below the message contains a login button. Should you:',
     'options': [
-      'Click the link and enter your information immediately', 
-      'Reply to the email with your account number', 
-      'Do not click the link, instead call your bank directly using the number on your card or statement', 
-      'Forward the email to friends to warn them'
+      'Click on the login button and log in to your account.', 
+      'Reply to the email to confirm its legitimacy.', 
+      'Do not click the link, and delete the email.', 
+      'Forward the email to friends to let them know of your prize.'
     ],
     'correctAnswerIndex': 2,
   },
@@ -33,12 +35,12 @@ final List<Map<String, dynamic>> quizQuestions = [
     'correctAnswerIndex': 1,
   },
   {
-    'question': 'What is a "strong password"?',
+    'question': 'You notice a suspicious charge on your credit card statement from an unknown online store. How should you respond?',
     'options': [
-      'A simple word that\'s easy to remember', 
-      'Your name followed by your birth year', 
-      'A combination of upper and lowercase letters, numbers, and symbols', 
-      'The same password you use for all websites'
+      'Ignore the charge, and assume it is a mistake and will be corrected', 
+      'Make a payment to avoid any late payment fees and investigate at a later time.', 
+      'Call the company that issued the charge and report the charge.', 
+      'Ask a family member if they made the purchase.'
     ],
     'correctAnswerIndex': 2,
   },

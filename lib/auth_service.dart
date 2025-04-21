@@ -34,23 +34,24 @@ class AuthService {
       });
       
     } on FirebaseAuthException catch(e) {
-      String message = '';
+      String message;
 
       print('🔥 SIGN-UP ERROR: ${e.code} - ${e.message}');
 
       if (e.code == 'weak-password') {
         message = 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
+      }
+      else if (e.code == 'invalid-email') {
+      message = 'The email address is not valid.';
+      } 
+      else if (e.code == 'email-already-in-use') {
         message = 'An account already exists with that email.';
       }
-       Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      else{
+        message = 'An error has occured. Please try again';
+      }
+      //This will display the error message at the bottom of the screen in a black box white text.
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message),));
     }
 
   }
@@ -82,15 +83,24 @@ class AuthService {
     });
       
     } on FirebaseAuthException catch(e) {
-      String message = '';
+      String message;
 
       print('🔥 SIGN-IN ERROR: ${e.code} - ${e.message}');
 
-      if (e.code == 'user-not-found') {
-        message = 'No user found for that email.';
-      } else if (e.code == 'wrong password') {
-        message = 'Wrong password provided for that user.';
-      }
+      if (e.code == 'invalid-credential') {
+      message = 'Incorrect password. Try again';
+    } else if (e.code == 'invalid-email') {
+      message = 'The email address is not valid.';
+    } else {
+      // For any other errors, uses a general message
+      message = 'An unexpected error occurred. Please try again later.';
+    }
+
+    //This will display the error message at the bottom of the screen in a black box white text.
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message),));
+
+      //Outdated: Due to platforming issues. Kept: Incase we switch back
+      /*
        Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
@@ -98,7 +108,7 @@ class AuthService {
         backgroundColor: Colors.black54,
         textColor: Colors.white,
         fontSize: 14.0,
-      );
+      );*/
     }
 
   }

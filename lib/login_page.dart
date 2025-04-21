@@ -1,9 +1,6 @@
 import 'package:cybersage/auth_service.dart';
-import 'package:cybersage/quiz_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/gestures.dart';
 
 
@@ -159,6 +156,7 @@ class LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
 Widget _signupLink(BuildContext context) {
   return Padding(

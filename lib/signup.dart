@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../login_page.dart';
 import '../auth_service.dart';
-import 'package:google_fonts/google_fonts.dart';
+//import 'package:google_fonts/google_fonts.dart';
 
 class Signup extends StatelessWidget {
   Signup({super.key});
@@ -29,16 +29,11 @@ class Signup extends StatelessWidget {
             children: [
               Center(
                 child: Text(
-                  'Register Account',
-                  style: GoogleFonts.raleway(
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32
-                    )
-                  ),
-                ),
+                'Register Account',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
+                ),
+  
               const SizedBox(height: 80,),
                _emailAddress(),
                const SizedBox(height: 20,),
@@ -58,22 +53,16 @@ class Signup extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Email Address',
-          style: GoogleFonts.raleway(
-            textStyle: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.normal,
-              fontSize: 16
-            )
-          ),
-        ),
+        const Text(
+                'Email address',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              ),
         const SizedBox(height: 16,),
         TextField(
           controller: _emailController,
           decoration: InputDecoration(
             filled: true,
-            hintText: 'mahdiforwork@gmail.com',
+            hintText: 'Example@gmail.com',
             hintStyle: const TextStyle(
               color: Color(0xff6A6A6A),
               fontWeight: FontWeight.normal,
@@ -97,13 +86,7 @@ class Signup extends StatelessWidget {
       children: [
         Text(
           'Password',
-          style: GoogleFonts.raleway(
-            textStyle: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.normal,
-              fontSize: 16
-            )
-          ),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)
         ),
         const SizedBox(height: 16,),
         TextField(
@@ -139,7 +122,7 @@ class Signup extends StatelessWidget {
           context: context
         );
       },
-      child: const Text("Sign Up"),
+      child: const Text("Sign Up", style: TextStyle(fontSize: 20)),
     );
   }
 
@@ -152,19 +135,11 @@ class Signup extends StatelessWidget {
           children: [
             const TextSpan(
                 text: "Already Have Account? ",
-                style: TextStyle(
-                  color: Color(0xff6A6A6A),
-                  fontWeight: FontWeight.normal,
-                  fontSize: 16
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
               TextSpan(
                 text: "Log In",
-                style: const TextStyle(
-                    color: Color(0xff1A1D1E),
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16
-                  ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   recognizer: TapGestureRecognizer()..onTap = () {
                     Navigator.push(
                       context,
