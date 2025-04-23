@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
-import 'quiz_page.dart'; 
+import 'quiz_page.dart';
 import 'signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-
 void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-     
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
     // Initialize Firebase
-    options: DefaultFirebaseOptions.currentPlatform,);
-    
-    //Runs app
-    runApp(const MyApp());
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
+  //Runs app
+  runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
-  
   const MyApp({super.key});
 
   //  Root of your application.
@@ -26,28 +24,49 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          colorScheme: ColorScheme(
-          primary: const Color(0xFF006B53),      // FGCU Green
+        colorScheme: ColorScheme(
+          primary: const Color(0xFF006B53), // FGCU Green
           onPrimary: Colors.white,
-          secondary: const Color(0xFF00287A),    // FGCU Blue
+          secondary: const Color(0xFF00287A), // FGCU Blue
           onSecondary: Colors.white,
           surface: Colors.white,
           onSurface: Colors.black87,
-          error: Colors.red.shade700,       
+          error: Colors.red.shade700,
           onError: Colors.white,
           brightness: Brightness.light,
         ),
-        
+
         // ENHANCED TEXT THEME FOR ELDERLY READABILITY
         textTheme: const TextTheme(
-          displayLarge: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, color: Colors.black87),
-          displayMedium: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold, color: Colors.black87),
-          displaySmall: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.black87),
-          headlineMedium: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.black87),
+          displayLarge: TextStyle(
+            fontSize: 28.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+          displayMedium: TextStyle(
+            fontSize: 26.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+          displaySmall: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 22.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+          headlineLarge: TextStyle(
+            fontSize: 28.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
           bodyLarge: TextStyle(fontSize: 20.0, color: Colors.black87),
           bodyMedium: TextStyle(fontSize: 18.0, color: Colors.black87),
         ),
-        
+
         // INCREASED BUTTON SIZE FOR BETTER ACCESSIBILITY
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -56,20 +75,47 @@ class MyApp extends StatelessWidget {
             minimumSize: const Size(100, 50),
           ),
         ),
-        
+
         // INCREASED INPUT FIELD SIZE FOR BETTER ACCESSIBILITY
         inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white, // Prevent fields from becoming transparent
           contentPadding: const EdgeInsets.all(16),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(width: 2.0),
-          ),
           labelStyle: const TextStyle(fontSize: 18.0),
           hintStyle: const TextStyle(fontSize: 18.0),
           errorStyle: const TextStyle(fontSize: 16.0, color: Colors.red),
+
+          // Ensure icons (prefix/suffix) remain visible
+          iconColor: Colors.black87,
+          prefixIconColor: Colors.black87,
+          suffixIconColor: Colors.black87,
+
+          // Default border when field is enabled but not focused
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: Colors.grey, width: 1.5),
+          ),
+
+          // Border when the field is focused
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: const Color(0xFF006B53), width: 2),
+          ),
+
+          // Border when there is a validation error
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
+          ),
+
+          // Border when field is both focused and in error
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+          ),
         ),
       ),
-      
+
       // REPLACED 'home' PROPERTY WITH ROUTES
       initialRoute: '/',
       routes: {
