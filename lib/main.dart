@@ -59,17 +59,44 @@ class MyApp extends StatelessWidget {
         
         // INCREASED INPUT FIELD SIZE FOR BETTER ACCESSIBILITY
         inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white, // Prevent fields from becoming transparent
           contentPadding: const EdgeInsets.all(16),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(width: 2.0),
-          ),
           labelStyle: const TextStyle(fontSize: 18.0),
           hintStyle: const TextStyle(fontSize: 18.0),
           errorStyle: const TextStyle(fontSize: 16.0, color: Colors.red),
+
+          // Ensure icons (prefix/suffix) remain visible
+          iconColor: Colors.black87,
+          prefixIconColor: Colors.black87,
+          suffixIconColor: Colors.black87,
+
+          // Default border when field is enabled but not focused
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: Colors.grey, width: 1.5),
+          ),
+
+          // Border when the field is focused
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: const Color(0xFF006B53), width: 2),
+          ),
+
+          // Border when there is a validation error
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
+          ),
+
+          // Border when field is both focused and in error
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+          ),
         ),
       ),
-      
+
       // REPLACED 'home' PROPERTY WITH ROUTES
       initialRoute: '/',
       routes: {

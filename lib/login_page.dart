@@ -1,197 +1,251 @@
-import 'package:cybersage/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
-
+import '../auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class LoginPageState extends State<LoginPage> {
-  //Controllers used to get input from the text input widgets
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
+  // Form key for validation
+  final _formKey = GlobalKey<FormState>();
 
-  //Instance of Firebase firestore to interact with the firestore database
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // Controllers to read user input
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  // State flags
+  bool _isPasswordVisible = false;
   bool _isLoading = false;
 
-  //Function in charge of storing Log in Info
-  Future<void> _storeLoginData() async {
+  String? _emailError;
+  String? _passwordError;
+  String? _generalError;
+  @override
+  void dispose() {
+    // Dispose controllers
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+//test_code
+Future<void> _login() async {
+  if (!_formKey.currentState!.validate()) return;
+
+  setState(() {
+    _isLoading = true;
+    _emailError = null;
+    _passwordError = null;
+  });
+
+  final error = await AuthService().signin(
+    email: _emailController.text.trim(),
+    password: _passwordController.text.trim(),
+    context: context,
+  );
+
+  if (mounted) {
     setState(() {
-      _isLoading = true;
-    });
-  
-  try {
-      
-      //Trims whitespace in front of input
-      final String username = usernameController.text;
-      final String password = passwordController.text;
-
-      //Sets up formatting for the firebase, and collects info
-      await _firestore.collection('Login_Info').add({
-        'username': username, //Stores Username
-        'password': password, //Stores Password
-        'timestamp': FieldValue.serverTimestamp(), //Stores timestamp
-      });
-
-      //Navigates to the quiz screen
-      if (mounted) {
-        Navigator.pushNamed(context, '/quiz');
+      _isLoading = false;
+      if (error != null) {
+        // Map error messages to specific fields
+        if (error.toLowerCase().contains('email')) {
+          _emailError = error;
+        } else if (error.toLowerCase().contains('password')) {
+          _passwordError = error;
+        } else {
+          _generalError = error; // default to general field
+        }
       }
-    } catch (e) {
-      print('Error storing data: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }//store loginData function
+    });
+  }
+}
+  /// Builds the external label + email field
+  Widget _buildEmailField(ColorScheme cs) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Email',
+          style: TextStyle(fontSize: 18)
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _emailController,
+          decoration: InputDecoration(
+            hintText: 'Enter your email',
+            prefixIcon: const Icon(Icons.email_outlined),
+            filled: true,
+            fillColor: cs.surface,
+            errorText: _emailError,//added line
+          ),
+          validator: (v) {
+            if (v == null || v.isEmpty) return 'Please enter your email';
+            if (!v.contains('@')) return 'Enter valid email';
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  /// Builds the external label + password field with visibility toggle
+  Widget _buildPasswordField(ColorScheme cs) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Password',
+          style: TextStyle(fontSize: 18)
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _passwordController,
+          obscureText: !_isPasswordVisible,
+          decoration: InputDecoration(
+            hintText: 'Enter your password',
+            prefixIcon: const Icon(Icons.lock_outline),
+            filled: true,
+            fillColor: cs.surface,
+            errorText: _passwordError,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+              ),
+              onPressed: () {
+                setState(() => _isPasswordVisible = !_isPasswordVisible);
+              },
+            ),
+          ),
+          enableSuggestions: false,
+          autocorrect: false,
+          validator: (v) {
+            if (v == null || v.isEmpty) return 'Please enter your password';
+            if (v.length < 6) return 'Password must be at least 6 characters';
+            return null;
+          },
+        ),
+        const SizedBox(height: 4),
+      ],
+    );
+  }
+
+
+  /// Builds the login button
+  Widget _buildLoginButton(ColorScheme cs) {
+    return ElevatedButton(
+      onPressed: _isLoading ? null : _login,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: cs.primary,
+        foregroundColor: cs.onPrimary,
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      child:
+          _isLoading ? const CircularProgressIndicator(color: Colors.white) : const Text('Login'),
+    );
+  }
+
+  /// Builds the “No account? Sign Up” prompt
+  Widget _buildSignupText(ColorScheme cs) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("No account? "),
+        MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () => Navigator.pushReplacementNamed(context, '/signup'),
+            child: Text(
+              'Sign Up',
+              style: TextStyle(
+                color: cs.secondary,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('CyberSage Login', style: TextStyle(fontSize: 22)),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: cs.primary,
+        foregroundColor: cs.onPrimary,
+        automaticallyImplyLeading: false,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(24.0),
-        child: SingleChildScrollView( // Add scrolling for smaller screens
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Form(
+          key: _formKey,
+          child: ListView(
             children: [
-              // CYBERSAGE LOGO
-              Container(
-                height: 120,
-                margin: const EdgeInsets.only(bottom: 40, top: 20),
-                child: Center(
-                  child: Text(
-                    "CyberSage",
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-          
-                  // child: Image.asset('assets/cyber_sage_logo.png'),
-                ),
-              ),
-              
-              const Text(
-                'Welcome to CyberSage',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              
-              const SizedBox(height: 30),
-              
-              const Text(
-                'Username',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 8),
-              TextField( 
-                controller: usernameController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your email',
-                  prefixIcon: Icon(Icons.person),
-                ),
-                style: const TextStyle(fontSize: 18),
-              ),
-              
               const SizedBox(height: 24),
-              
-              const Text(
-                'Password',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+
+              // Main header
+              Text(
+                'CyberSage',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.headlineLarge?.copyWith(
+                  color: cs.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+
               const SizedBox(height: 8),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your password',
-                  prefixIcon: Icon(Icons.lock),
+
+              // Subtitle
+              Text(
+                'Welcome to CyberSage',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.displayMedium?.copyWith(
+                  color: cs.onSurface,
                 ),
-                style: const TextStyle(fontSize: 18),
               ),
-              
+
               const SizedBox(height: 40),
-              
-              ElevatedButton(
-                onPressed: () async {
-                  _isLoading ? null : _storeLoginData;
-                  await AuthService().signin(
-                    email: usernameController.text, 
-                    password: passwordController.text, 
-                    context: context
-                  );
-                },
 
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                ),
-                child: _isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Login', style: TextStyle(fontSize: 20)),
-              ), //Sign in button
-              
-              const SizedBox(height: 16),
-              
+              // Email & password fields
+              _buildEmailField(cs),
+              const SizedBox(height: 20),
+              _buildPasswordField(cs),
 
-              _signupLink(context),
-   
+              const SizedBox(height: 30),
+            if (_generalError != null)
+              Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(
+                    _generalError!,
+                    style: TextStyle(
+                    color: Colors.red[700],
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                  ),
+              ),
+              // Login button
+              _buildLoginButton(cs),
+
+              const SizedBox(height: 20),
+
+              // Signup prompt
+              _buildSignupText(cs),
             ],
           ),
         ),
       ),
     );
-  }
-
-
-Widget _signupLink(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 16),
-    child: RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: const TextStyle(fontSize: 16),
-        children: [
-          const TextSpan(
-            text: "No account? ",
-            style: TextStyle(color: Colors.black54),
-          ),
-          TextSpan(
-            text: "Sign Up",
-            style: const TextStyle(
-              color: Colors.blue,
-              decoration: TextDecoration.underline,
-              fontWeight: FontWeight.bold,
-            ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                Navigator.pushNamed(context, '/signup');
-              },
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-  @override
-  void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
-    super.dispose();
   }
 }

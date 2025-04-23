@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 // List of cybersecurity quiz questions for seniors
 final List<Map<String, dynamic>> quizQuestions = [
   {
@@ -14,7 +14,7 @@ final List<Map<String, dynamic>> quizQuestions = [
     'correctAnswerIndex': 1,
   },
   {
-    'question': '5.	You received an email claiming that you have won free healthcare as part of a giveaway run by your insurance company. '
+    'question': 'You received an email claiming that you have won free healthcare as part of a giveaway run by your insurance company. '
     ' To claim the offer, you must log in to your account and click accept. Below the message contains a login button. Should you:',
     'options': [
       'Click on the login button and log in to your account.', 
@@ -151,6 +151,7 @@ class QuizPageState extends State<QuizPage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
+        //this sets up the alert Dialog pop-up when the user has completed the quiz
         return AlertDialog(
           title: const Text('Quiz Completed!', 
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -172,8 +173,8 @@ class QuizPageState extends State<QuizPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
                 Navigator.pushReplacementNamed(context, '/');
               },
               child: const Text('Return to Login', style: TextStyle(fontSize: 18)),
