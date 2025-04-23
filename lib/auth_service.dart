@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../login_page.dart';
-import '../quiz_page.dart';
+import '../home_page.dart';
 
 
 class AuthService {
@@ -76,7 +76,7 @@ class AuthService {
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const QuizPage()),
+          MaterialPageRoute(builder: (_) => const HomePage()),
         );
       }
     });
