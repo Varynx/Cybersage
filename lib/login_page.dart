@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/gestures.dart';
+import 'package:cybersage/Lesson_page.dart'; 
 
 
 class LoginPage extends StatefulWidget {
@@ -42,9 +43,9 @@ class LoginPageState extends State<LoginPage> {
         'timestamp': FieldValue.serverTimestamp(), //Stores timestamp
       });
 
-      //Navigates to the quiz screen
+      //Navigates to the lessons screen
       if (mounted) {
-        Navigator.pushNamed(context, '/quiz');
+        Navigator.pushNamed(context, '/lessons');
       }
     } catch (e) {
       print('Error storing data: $e');
@@ -53,7 +54,7 @@ class LoginPageState extends State<LoginPage> {
         _isLoading = false;
       });
     }
-  }//store loginData function
+  }//store loginData function 
 
   @override
   Widget build(BuildContext context) {
@@ -72,21 +73,15 @@ class LoginPageState extends State<LoginPage> {
             children: [
               // CYBERSAGE LOGO
               Container(
-                height: 120,
-                margin: const EdgeInsets.only(bottom: 40, top: 20),
+                height: 240,
+                margin: const EdgeInsets.only(bottom: 80, top: 40),
                 child: Center(
-                  child: Text(
-                    "CyberSage",
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
+                  child: Image.asset(
+                    'cybersage_no_person.png',
+                    fit: BoxFit.contain,
                     ),
                   ),
-          
-                  // child: Image.asset('assets/cyber_sage_logo.png'),
                 ),
-              ),
               
               const Text(
                 'Welcome to CyberSage',

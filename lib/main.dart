@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'login_page.dart';
 import 'quiz_page.dart'; 
 import 'signup.dart';
+import 'Lesson_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LoginPage(),
         '/quiz': (context) => const QuizPage(),
         '/signup': (context) => Signup(),
+        '/lessons': (context) => LessonPage(),
       },
     );
   }
