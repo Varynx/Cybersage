@@ -75,7 +75,7 @@ Future<String?> signin({
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const LessonPage()),//change this later to homepage
+          MaterialPageRoute(builder: (_) => const QuizPage()),//change this later to homepage
         );
       }
     });

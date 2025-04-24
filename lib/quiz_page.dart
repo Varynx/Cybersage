@@ -62,6 +62,7 @@ final List<Map<String, dynamic>> quizQuestions = [
       'Reply to the email for further support from the support team.'
     ],
     'correctAnswerIndex': 2,
+    'image': 'assets/cybersage_no_person.png',//replace with actual image found in doc
   },
   {
     'question': 'The following email has been sent to your inbox claiming that an invoice of'
@@ -73,6 +74,7 @@ final List<Map<String, dynamic>> quizQuestions = [
       'Call the number given in the notes for more information.'
     ],
     'correctAnswerIndex': 1,
+    //add image
   },
   {
     'question': '10.	What is a key sign that an email might be a phishing attempt?',
@@ -93,6 +95,7 @@ final List<Map<String, dynamic>> quizQuestions = [
       'All of the above.'
     ],
     'correctAnswerIndex': 3,
+    //add image
   },
 ];
 
@@ -165,9 +168,9 @@ class QuizPageState extends State<QuizPage> {
             TextButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/home');
               },
-              child: const Text('Return to Login', style: TextStyle(fontSize: 18)),
+              child: const Text('Return to Home', style: TextStyle(fontSize: 18)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -180,7 +183,7 @@ class QuizPageState extends State<QuizPage> {
                   score = 0;
                 });
               },
-              child: const Text('Try Again', style: TextStyle(fontSize: 18)),
+              child: const Text('Try Again.', style: TextStyle(fontSize: 18)),
             ),
           ],
         );
@@ -219,6 +222,39 @@ class QuizPageState extends State<QuizPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Question number indicator
+               // Question text
+              Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 2,
+                  ),
+                ),
+              child: Column(
+              children: [
+              Text(
+              currentQuestion['question'],
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            if (currentQuestion.containsKey('image') && currentQuestion['image'] != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Image.asset(
+                  currentQuestion['image'],
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+        ),
+                /*
                 Container(
                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -258,7 +294,7 @@ class QuizPageState extends State<QuizPage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                
+                */
                 const SizedBox(height: 30),
                 
                 // Instructions for elderly users
