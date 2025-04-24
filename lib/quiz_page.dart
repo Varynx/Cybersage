@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Combined list of cybersecurity quiz questions for seniors
+// List of cybersecurity quiz questions for seniors
 final List<Map<String, dynamic>> quizQuestions = [
   {
     'question':
@@ -17,49 +17,19 @@ final List<Map<String, dynamic>> quizQuestions = [
     'correctAnswerIndex': 1,
   },
   {
-    'question': 'What is "phishing"?',
+    'question':
+        '15.	What should you do if you suspect that you may have given sensitive information to a potential scammer?',
     'options': [
-      'A hobby activity involving catching fish',
-      'An attempt by scammers to trick you into giving personal information by pretending to be a trustworthy organization',
-      'A computer virus that damages your files',
-      'A method of fixing computer problems remotely',
+      'Ignore it and assume there will be no consquences.',
+      'Contact the proper authorities based on the information you have given.',
+      'Alert the scammer that you are aware of the situation.',
+      'Give false information to the scammer to trick them.',
     ],
     'correctAnswerIndex': 1,
   },
   {
     'question':
-        'If you receive an email from your bank asking you to click a link to verify your account information, what should you do?',
-    'options': [
-      'Click the link and enter your information immediately',
-      'Reply to the email with your account number',
-      'Do not click the link, instead call your bank directly using the number on your card or statement',
-      'Forward the email to friends to warn them',
-    ],
-    'correctAnswerIndex': 2,
-  },
-  {
-    'question': 'Which of these is a sign that an email might be a scam?',
-    'options': [
-      'It\'s from someone you know and contains normal conversation',
-      'It has urgent language demanding immediate action',
-      'It has the company\'s correct logo',
-      'It addresses you by your full name',
-    ],
-    'correctAnswerIndex': 1,
-  },
-  {
-    'question': 'What is a "strong password"?',
-    'options': [
-      'A simple word that\'s easy to remember',
-      'Your name followed by your birth year',
-      'A combination of upper and lowercase letters, numbers, and symbols',
-      'The same password you use for all websites',
-    ],
-    'correctAnswerIndex': 2,
-  },
-  {
-    'question':
-        'What should you do if someone calls claiming to be from Microsoft or Apple saying there\'s a problem with your computer?',
+        'What should you do if someone calls claiming to be from Microsoft claiming there\'s a problem with your computer?',
     'options': [
       'Give them remote access to your computer',
       'Provide your credit card to pay for their support',
@@ -91,7 +61,7 @@ final List<Map<String, dynamic>> quizQuestions = [
   },
   {
     'question':
-        'The following email is sent to you claiming that an unknown user has accessed your Facebook account. How should you respond?',
+        'The following email is sent to you claiming that an unknown user has accessed your Facebook account. How should you respond? ',
     'options': [
       'Forward the email to your friends and family to warn them of possible messages from an impostor using your account.',
       'Click Report the User to report on this suspicious activity',
@@ -99,6 +69,7 @@ final List<Map<String, dynamic>> quizQuestions = [
       'Reply to the email for further support from the support team.',
     ],
     'correctAnswerIndex': 2,
+    'image': 'assets/question6.png',
   },
   {
     'question':
@@ -111,9 +82,12 @@ final List<Map<String, dynamic>> quizQuestions = [
       'Call the number given in the notes for more information.',
     ],
     'correctAnswerIndex': 1,
+    'image': 'assets/question7.png',
   },
+
   {
-    'question': 'What is a key sign that an email might be a phishing attempt?',
+    'question':
+        '10.	What is a key sign that an email might be a phishing attempt?',
     'options': [
       'The email is vague and creates a sense of urgency.',
       'The email contains a phone number for customer service',
@@ -132,39 +106,7 @@ final List<Map<String, dynamic>> quizQuestions = [
       'All of the above.',
     ],
     'correctAnswerIndex': 3,
-  },
-  {
-    'question':
-        'What should you do if you suspect that you may have given sensitive information to a potential scammer?',
-    'options': [
-      'Ignore it and assume there will be no consquences.',
-      'Contact the proper authorities based on the information you have given.',
-      'Alert the scammer that you are aware of the situation.',
-      'Give false information to the scammer to trick them.',
-    ],
-    'correctAnswerIndex': 1,
-  },
-  {
-    'question':
-        'If a loved one sends you a message saying they\'re stranded overseas and need money urgently, what should you do first?',
-    'options': [
-      'Send money immediately through wire transfer',
-      'Purchase gift cards and send the codes as requested',
-      'Contact them directly through a different method to verify it\'s really them',
-      'Share your bank account details so they can access your funds',
-    ],
-    'correctAnswerIndex': 2,
-  },
-  {
-    'question':
-        'If you receive a text message saying you\'ve won a prize and need to click a link to claim it, what should you do?',
-    'options': [
-      'Click the link immediately to claim your prize',
-      'Delete the message - this is likely a scam',
-      'Reply with your personal information',
-      'Forward it to everyone in your contacts',
-    ],
-    'correctAnswerIndex': 1,
+    'image': 'assets/question9.png',
   },
 ];
 
@@ -254,11 +196,11 @@ class QuizPageState extends State<QuizPage> {
           actions: [
             TextButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacementNamed(context, '/');
+                // await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, '/home');
               },
               child: const Text(
-                'Return to Login',
+                'Return to Home',
                 style: TextStyle(fontSize: 18),
               ),
             ),
@@ -273,7 +215,7 @@ class QuizPageState extends State<QuizPage> {
                   score = 0;
                 });
               },
-              child: const Text('Try Again', style: TextStyle(fontSize: 18)),
+              child: const Text('Try Again.', style: TextStyle(fontSize: 18)),
             ),
           ],
         );

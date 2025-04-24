@@ -133,6 +133,7 @@ class _LessonPageState extends State<LessonPage> {
         title: const Text('CyberSage Lessons', style: TextStyle(fontSize: 22)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Column(

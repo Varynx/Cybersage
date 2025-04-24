@@ -102,7 +102,7 @@ class _ResultsPageState extends State<ResultsPage> {
                       // display the last score or a fallback message
                       Text(
                         lastScore != null
-                            ? 'You scored $lastScore out of 10!'
+                            ? 'You scored $lastScore out of 9!'
                             : 'No previous score found.',
                         style: const TextStyle(
                           fontSize: 20,
