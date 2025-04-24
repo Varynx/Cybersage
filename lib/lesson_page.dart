@@ -19,7 +19,8 @@ final List<Map<String, String>> cybersecurityLessons = [
     'title': 'Phishing Example',
     'content':
         'Look closely at this phishing email. Common red flags include:\n\t ⦁A long recipient list\n ⦁\tBlank subject line\n ⦁\tImages or attachments referencing unfamiliar transactions',
-    'bot_image': 'Phishing_Example.png',
+    'bot1_image': 'Phishing_Example1.png',
+    'bot2_image': 'Phishing_Example2.png',
   },
   {
     'title': 'What is Identity Fraud?',
@@ -37,7 +38,7 @@ final List<Map<String, String>> cybersecurityLessons = [
     'content':
         'Example: Similarly, due to the lack of knowledge with technology, the elderly are very susceptible to identity fraud, as social engineering tactics or the use of phishing emails can lead to attackers gaining personal'
         'information about the victim that allows attackers to impersonate the victim for their personal gain, such as taking loans out in their name.',
-        'bot_image': 'Identity_Theft_Examples.png',
+        'bot1_image': 'Identity_Theft_Examples.png',
   },
   {
     'title': 'What is a Tech Support Scam?',
@@ -176,12 +177,34 @@ class _LessonPageState extends State<LessonPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (currentLesson['bot_image'] != null)
+                      if (currentLesson['bot1_image'] != null)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 16),
                           child: Center(
                             child: Image.asset(
-                              currentLesson['bot_image']!,
+                              currentLesson['bot1_image']!,
+                              height: 500,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        if (currentLesson['bot2_image'] != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Center(
+                            child: Image.asset(
+                              currentLesson['bot2_image']!,
+                              height: 500,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        if (currentLesson['bot3_image'] != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Center(
+                            child: Image.asset(
+                              currentLesson['bot3_image']!,
                               height: 500,
                               fit: BoxFit.contain,
                             ),
