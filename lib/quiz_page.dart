@@ -7,32 +7,31 @@ final List<Map<String, dynamic>> quizQuestions = [
     ' and to call the number on your screen to help remove the virus. Should you:',
     'options': [
       'Call the number and follow their directions to help you remove the virus.', 
-      'Ignore and close the message.', 
+      'Ignore and close the message. This is how scam callers find victims.', 
       'A computer virus that damages your files', 
       'A method of fixing computer problems remotely'
     ],
     'correctAnswerIndex': 1,
   },
   {
-    'question': 'You received an email claiming that you have won free healthcare as part of a giveaway run by your insurance company. '
-    ' To claim the offer, you must log in to your account and click accept. Below the message contains a login button. Should you:',
+    'question': '15.	What should you do if you suspect that you may have given sensitive information to a potential scammer?',
     'options': [
-      'Click on the login button and log in to your account.', 
-      'Reply to the email to confirm its legitimacy.', 
-      'Do not click the link, and delete the email.', 
-      'Forward the email to friends to let them know of your prize.'
-    ],
-    'correctAnswerIndex': 2,
-  },
-  {
-    'question': 'Which of these is a sign that an email might be a scam?',
-    'options': [
-      'It\'s from someone you know and contains normal conversation', 
-      'It has urgent language demanding immediate action', 
-      'It has the company\'s correct logo', 
-      'It addresses you by your full name'
+      'Ignore it and assume there will be no consquences.', 
+      'Contact the proper authorities based on the information you have given.', 
+      'Alert the scammer that you are aware of the situation.', 
+      'Give false information to the scammer to trick them.'
     ],
     'correctAnswerIndex': 1,
+  },
+  {
+    'question': 'What should you do if someone calls claiming to be from Microsoft claiming there\'s a problem with your computer?',
+    'options': [
+      'Give them remote access to your computer', 
+      'Provide your credit card to pay for their support', 
+      'Hang up immediately - this is a common scam', 
+      'Tell them your computer\'s password'
+    ],
+    'correctAnswerIndex': 2,
   },
   {
     'question': 'You notice a suspicious charge on your credit card statement from an unknown online store. How should you respond?',
@@ -44,47 +43,7 @@ final List<Map<String, dynamic>> quizQuestions = [
     ],
     'correctAnswerIndex': 2,
   },
-  {
-    'question': 'What should you do if someone calls claiming to be from Microsoft or Apple saying there\'s a problem with your computer?',
-    'options': [
-      'Give them remote access to your computer', 
-      'Provide your credit card to pay for their support', 
-      'Hang up immediately - this is a common scam', 
-      'Tell them your computer\'s password'
-    ],
-    'correctAnswerIndex': 2,
-  },
-  {
-    'question': 'Which of these is a safe way to share sensitive documents?',
-    'options': [
-      'Posting them on social media', 
-      'Using secure, encrypted email or file-sharing services', 
-      'Sending them as email attachments to everyone', 
-      'Using public WiFi to send them quickly'
-    ],
-    'correctAnswerIndex': 1,
-  },
-  {
-    'question': 'What is "two-factor authentication"?',
-    'options': [
-      'Having two different passwords for the same account', 
-      'An extra security step that requires both a password and a temporary code', 
-      'Logging in twice to make sure the system recognizes you', 
-      'Having two people verify your identity'
-    ],
-    'correctAnswerIndex': 1,
-  },
-  {
-    'question': 'If a loved one sends you a message saying they\'re stranded overseas and need money urgently, what should you do first?',
-    'options': [
-      'Send money immediately through wire transfer', 
-      'Purchase gift cards and send the codes as requested', 
-      'Contact them directly through a different method to verify it\'s really them', 
-      'Share your bank account details so they can access your funds'
-    ],
-    'correctAnswerIndex': 2,
-  },
-  {
+ {
     'question': 'What information is generally safe to share on social media?',
     'options': [
       'Your full birth date including year', 
@@ -95,14 +54,45 @@ final List<Map<String, dynamic>> quizQuestions = [
     'correctAnswerIndex': 2,
   },
   {
-    'question': 'If you receive a text message saying you\'ve won a prize and need to click a link to claim it, what should you do?',
+    'question': 'The following email is sent to you claiming that an unknown user has accessed your Facebook account. How should you respond? ',
     'options': [
-      'Click the link immediately to claim your prize', 
-      'Delete the message - this is likely a scam', 
-      'Reply with your personal information', 
-      'Forward it to everyone in your contacts'
+      'Forward the email to your friends and family to warn them of possible messages from an impostor using your account.', 
+      'Click Report the User to report on this suspicious activity', 
+      'Ignore the email, and verify the activity by logging into Facebook using the official website or app.', 
+      'Reply to the email for further support from the support team.'
+    ],
+    'correctAnswerIndex': 2,
+  },
+  {
+    'question': 'The following email has been sent to your inbox claiming that an invoice of'
+    ' \$320 has been charged on your PayPal account. How could you verify the validity of the email?',
+    'options': [
+      'Click on the View and Pay button within the email to quickly get more details about the charge.', 
+      'Manually head to PayPal\'s official website or app to check if the invoice is legitimate.', 
+      'Reply to the email asking for more information about the invoice.', 
+      'Call the number given in the notes for more information.'
     ],
     'correctAnswerIndex': 1,
+  },
+  {
+    'question': '10.	What is a key sign that an email might be a phishing attempt?',
+    'options': [
+      'The email is vague and creates a sense of urgency.', 
+      'The email contains a phone number for customer service', 
+      'The email is lengthy and well written with a proper email address.', 
+      'The email contains an attachment.'
+    ],
+    'correctAnswerIndex': 0,
+  },
+  {
+    'question': 'Look at the following email. What are some signs that this is a phishing attempt?',
+    'options': [
+      'There is little explanation about the attachment.', 
+      'The sender email address is a random combination of letters', 
+      'A sense of urgency is made with the claim of your service being suspended.', 
+      'All of the above.'
+    ],
+    'correctAnswerIndex': 3,
   },
 ];
 

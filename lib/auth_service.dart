@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../login_page.dart';
 import '../quiz_page.dart';
+import '../Lesson_page.dart';
 
 
 class AuthService {
@@ -27,7 +28,7 @@ class AuthService {
         if (context.mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const LoginPage()),//change this later to homepage
+            MaterialPageRoute(builder: (_) => const LoginPage()),
           );
         }
       });
@@ -74,7 +75,7 @@ Future<String?> signin({
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const QuizPage()),
+          MaterialPageRoute(builder: (_) => const LessonPage()),//change this later to homepage
         );
       }
     });

@@ -191,28 +191,17 @@ Future<void> _login() async {
           key: _formKey,
           child: ListView(
             children: [
-              const SizedBox(height: 24),
-
-              // Main header
-              Text(
-                'CyberSage',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineLarge?.copyWith(
-                  color: cs.primary,
-                  fontWeight: FontWeight.bold,
+              // CYBERSAGE LOGO
+              Container(
+                height: 240,
+                margin: const EdgeInsets.only(bottom: 80, top: 40),
+                child: Center(
+                  child: Image.asset(
+                    'cybersage_no_person.png',
+                    fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
-              ),
-
-              const SizedBox(height: 8),
-
-              // Subtitle
-              Text(
-                'Welcome to CyberSage',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.displayMedium?.copyWith(
-                  color: cs.onSurface,
-                ),
-              ),
 
               const SizedBox(height: 40),
 
