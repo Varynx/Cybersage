@@ -1,23 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../login_page.dart';
+import '../quiz_page.dart';
+import '../lesson_page.dart';
 import '../home_page.dart';
 
-
 class AuthService {
-
-  Future<void> signup({
+  Future<String?> signup({
     required String email,
     required String password,
-    required BuildContext context
+    required BuildContext context,
   }) async {
-    
     try {
-
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
-        password: password
+        password: password,
       );
 
       // Optional delay before navigating
@@ -32,88 +29,73 @@ class AuthService {
           );
         }
       });
-      
-    } on FirebaseAuthException catch(e) {
-      String message = '';
 
+      return null;
+    } on FirebaseAuthException catch (e) {
       print('🔥 SIGN-UP ERROR: ${e.code} - ${e.message}');
 
       if (e.code == 'weak-password') {
-        message = 'The password provided is too weak.';
+        return 'The password provided is too weak.';
+      } else if (e.code == 'invalid-email') {
+        return 'The email address is not valid.';
       } else if (e.code == 'email-already-in-use') {
-        message = 'An account already exists with that email.';
+        return 'An account already exists with that email.';
+      } else if (e.code == 'network-request-failed') {
+        return 'No internet connection. Check you connection.';
+      } else {
+        return 'An error has occured. Please try again';
       }
-       Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
     }
-
   }
 
-  Future<void> signin({
+  Future<String?> signin({
     required String email,
     required String password,
-    required BuildContext context
+    required BuildContext context,
   }) async {
-    
     try {
-
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
-        password: password
+        password: password,
       );
 
-  // Optional delay before navigating
-    await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const HomePage(),
+            ), //change this later to homepage
+          );
+        }
+      });
 
-    // Wrap navigation in addPostFrameCallback
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (context.mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomePage()),
-        );
-      }
-    });
-      
-    } on FirebaseAuthException catch(e) {
-      String message = '';
-
+      return null; // no error
+    } on FirebaseAuthException catch (e) {
       print('🔥 SIGN-IN ERROR: ${e.code} - ${e.message}');
-
-      if (e.code == 'user-not-found') {
-        message = 'No user found for that email.';
-      } else if (e.code == 'wrong password') {
-        message = 'Wrong password provided for that user.';
+      if (e.code == 'wrong-password') {
+        return 'Incorrect password. Try again.';
+      } else if (e.code == 'invalid-credential') {
+        return 'Username or password is incorrect.';
+      } else if (e.code == 'invalid-email') {
+        return 'Enter a valid email address.';
+      } else if (e.code == 'missing-password') {
+        return 'Enter your password.';
+      } else if (e.code == 'network-request-failed') {
+        return 'No internet connection. Check your connection.';
+      } else {
+        return 'An unexpected error occurred. Please try again.';
       }
-       Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
     }
-
   }
 
-  Future<void> signout({
-    required BuildContext context
-  }) async {
-    
+  Future<void> signout({required BuildContext context}) async {
     await FirebaseAuth.instance.signOut();
     await Future.delayed(const Duration(seconds: 1));
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) =>LoginPage()
-        )
-      );
+      context,
+      MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+    );
   }
 }

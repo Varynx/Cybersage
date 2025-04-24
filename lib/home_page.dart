@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../auth_service.dart';  // Ensure AuthService is imported
+import '../auth_service.dart'; // Import your custom authentication service
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,71 +7,168 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final cs = theme.colorScheme;
+    final colorScheme =
+        theme
+            .colorScheme; // Get the current color scheme for consistent theming
 
     return Scaffold(
+      // AppBar at the top with a title and primary background color
       appBar: AppBar(
-        title: const Text('Welcome to CyberSage'),
-        backgroundColor: cs.primary,
+        title: const Text('Home Page', style: TextStyle(fontSize: 22)),
+        backgroundColor: colorScheme.primary,
+        foregroundColor:
+            colorScheme.onPrimary, // Use primary color from colorScheme
+        automaticallyImplyLeading: false,
       ),
+
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(
+          24.0,
+        ), // Add padding around the body content
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment:
+              MainAxisAlignment.center, // Vertically center the content
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Horizontally center the content
+
           children: [
+            // Welcome message centered at the top
             const Text(
               'Welcome to CyberSage, the Cybersecurity Quiz Platform!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24, // Set the font size for the welcome message
+                fontWeight: FontWeight.bold, // Make the text bold
+              ),
+              textAlign:
+                  TextAlign.center, // Center the text within the container
             ),
-            const SizedBox(height: 40),
 
+            const SizedBox(
+              height: 40,
+            ), // Add space between the welcome message and the button
             // Start Quiz Button
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/quiz');  // Navigate to the quiz page
+                // Navigate to the quiz page when the button is pressed
+                Navigator.pushNamed(context, '/lesson');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: cs.primary,
-                foregroundColor: cs.onPrimary,
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                backgroundColor:
+                    colorScheme
+                        .primary, // Use primary color for button background
+                foregroundColor:
+                    colorScheme.onPrimary, // Use contrasting text color
+                minimumSize: const Size.fromHeight(
+                  80,
+                ), // Make the button taller for better visibility
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                ), // Increase horizontal padding for a wider button
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    12,
+                  ), // Round the corners of the button
+                ),
               ),
-              child: const Text('Start Quiz'),
+              child: const Text(
+                'Start Lessons',
+                style: TextStyle(fontSize: 18),
+              ), // Button text with larger font size
             ),
 
-            const SizedBox(height: 20),
-
-            // Results Button (if you want to direct users to the results page)
+            const SizedBox(
+              height: 40,
+            ), // Add space between the welcome message and the button
+            // Start Quiz Button
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/results');  // Navigate to the results page
+                // Navigate to the quiz page when the button is pressed
+                Navigator.pushNamed(context, '/quiz');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: cs.secondary,
-                foregroundColor: cs.onSecondary,
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                backgroundColor:
+                    colorScheme
+                        .primary, // Use primary color for button background
+                foregroundColor:
+                    colorScheme.onPrimary, // Use contrasting text color
+                minimumSize: const Size.fromHeight(
+                  80,
+                ), // Make the button taller for better visibility
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                ), // Increase horizontal padding for a wider button
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    12,
+                  ), // Round the corners of the button
+                ),
               ),
-              child: const Text('View Results'),
+              child: const Text(
+                'Start Quiz',
+                style: TextStyle(fontSize: 18),
+              ), // Button text with larger font size
             ),
 
-            const SizedBox(height: 20),
-
-            // Sign-Out Button
+            const SizedBox(height: 30), // Add more space between buttons
+            // View Results Button
             ElevatedButton(
               onPressed: () {
-                // Call the signOut method from AuthService
+                // Navigate to the results page when the button is pressed
+                Navigator.pushNamed(context, '/results');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    colorScheme
+                        .secondary, // Use secondary color for button background
+                foregroundColor:
+                    colorScheme.onSecondary, // Use contrasting text color
+                minimumSize: const Size.fromHeight(
+                  80,
+                ), // Make the button taller
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                ), // Increase horizontal padding
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    12,
+                  ), // Round the corners of the button
+                ),
+              ),
+              child: const Text(
+                'View Results',
+                style: TextStyle(fontSize: 18),
+              ), // Button text with larger font size
+            ),
+
+            const SizedBox(height: 30), // Add more space between buttons
+            // Sign Out Button
+            ElevatedButton(
+              onPressed: () {
+                // Call the signout method from AuthService to log the user out
                 AuthService().signout(context: context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: cs.error,
-                foregroundColor: cs.onError,
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                backgroundColor:
+                    colorScheme
+                        .error, // Use error color (typically red) for the sign-out button
+                foregroundColor:
+                    colorScheme.onError, // Use contrasting text color
+                minimumSize: const Size.fromHeight(
+                  80,
+                ), // Make the button taller
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                ), // Increase horizontal padding
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    12,
+                  ), // Round the corners of the button
+                ),
               ),
-              child: const Text('Sign Out'),
+              child: const Text(
+                'Sign Out',
+                style: TextStyle(fontSize: 18),
+              ), // Button text with larger font size
             ),
           ],
         ),

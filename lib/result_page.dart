@@ -16,26 +16,34 @@ class _ResultsPageState extends State<ResultsPage> {
   @override
   void initState() {
     super.initState();
+
+    // start fetching the latest score when the screen loads
     _fetchLatestScore();
   }
 
+  // fetch the most recent quiz score from firestore for the current user
   Future<void> _fetchLatestScore() async {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        final snapshot = await FirebaseFirestore.instance
-            .collection('quiz_results')
-            .where('user_id', isEqualTo: currentUser.uid)
-            .orderBy('timestamp', descending: true)
-            .limit(1)
-            .get();
 
+      if (currentUser != null) {
+        // query the latest quiz result for the logged-in user
+        final snapshot =
+            await FirebaseFirestore.instance
+                .collection('quiz_results')
+                .where('user_id', isEqualTo: currentUser.uid)
+                .orderBy('timestamp', descending: true)
+                .limit(1)
+                .get();
+
+        // if a result exists, set it in the state
         if (snapshot.docs.isNotEmpty) {
           setState(() {
             lastScore = snapshot.docs.first['score'];
             isLoading = false;
           });
         } else {
+          // if no results found
           setState(() {
             lastScore = null;
             isLoading = false;
@@ -43,7 +51,9 @@ class _ResultsPageState extends State<ResultsPage> {
         }
       }
     } catch (e) {
-      print("Error fetching score: $e");
+      print("error fetching score: $e");
+
+      // stop loading if an error occurs
       setState(() {
         isLoading = false;
       });
@@ -53,53 +63,75 @@ class _ResultsPageState extends State<ResultsPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final cs = theme.colorScheme;
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz Results'),
-        backgroundColor: cs.primary,
+        title: const Text('CyberSage Login', style: TextStyle(fontSize: 22)),
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        automaticallyImplyLeading: false,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(24.0),
+
         child: Center(
-          child: isLoading
-              ? const CircularProgressIndicator()
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Your Quiz Results!',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 40),
+          child:
+              isLoading
+                  // show loading spinner while fetching score
+                  ? const CircularProgressIndicator()
+                  // show results content after loading
+                  : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
 
-                    Text(
-                      lastScore != null
-                          ? 'You scored $lastScore out of 10!'
-                          : 'No previous score found.',
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.center,
-                    ),
-
-                    const SizedBox(height: 40),
-
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/home');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: cs.primary,
-                        foregroundColor: cs.onPrimary,
-                        minimumSize: const Size.fromHeight(50),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    children: [
+                      // heading text
+                      const Text(
+                        'Your Quiz Results!',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      child: const Text('Return to Home Page'),
-                    ),
-                  ],
-                ),
+
+                      const SizedBox(height: 40),
+
+                      // display the last score or a fallback message
+                      Text(
+                        lastScore != null
+                            ? 'You scored $lastScore out of 10!'
+                            : 'No previous score found.',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      const SizedBox(height: 40),
+
+                      // return to home page button
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.primary,
+                          foregroundColor: colorScheme.onPrimary,
+                          minimumSize: const Size.fromHeight(50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+
+                        child: const Text('Return to Home Page'),
+                      ),
+                    ],
+                  ),
         ),
       ),
     );

@@ -10,49 +10,71 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Form key for validation
+  // Form key to handle form validation
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers to read user input
+  // Controllers to read user input from email and password fields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  // State flags
+  // State flags to control visibility of password and loading state
   bool _isPasswordVisible = false;
   bool _isLoading = false;
 
+  // Error messages for email, password, and general errors
+  String? _emailError;
+  String? _passwordError;
+  String? _generalError;
+
   @override
   void dispose() {
-    // Dispose controllers
+    // Dispose controllers to prevent memory leaks
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  /// Calls AuthService to sign in the user
+  // Login method that attempts to sign in the user
   Future<void> _login() async {
+    // Validate the form before proceeding
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
-    await AuthService().signin(
+    setState(() {
+      _isLoading = true;
+      _emailError = null;
+      _passwordError = null;
+    });
+
+    // Call AuthService to attempt sign in and get potential errors
+    final error = await AuthService().signin(
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
       context: context,
     );
-    if (mounted) setState(() => _isLoading = false);
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+        if (error != null) {
+          // Map error messages to specific fields
+          if (error.toLowerCase().contains('email')) {
+            _emailError = error;
+          } else if (error.toLowerCase().contains('password')) {
+            _passwordError = error;
+          } else {
+            _generalError = error; // default to general error
+          }
+        }
+      });
+    }
   }
 
-  /// Builds the external label + email field
+  // Builds the email field with validation and error handling
   Widget _buildEmailField(ColorScheme cs) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Email',
-          style: GoogleFonts.raleway(
-            textStyle: const TextStyle(color: Colors.black, fontSize: 16),
-          ),
-        ),
+        Text('Email', style: TextStyle(fontSize: 18)),
         const SizedBox(height: 8),
         TextFormField(
           controller: _emailController,
@@ -61,10 +83,11 @@ class _LoginPageState extends State<LoginPage> {
             prefixIcon: const Icon(Icons.email_outlined),
             filled: true,
             fillColor: cs.surface,
+            errorText: _emailError, // Displays error message if any
           ),
           validator: (v) {
             if (v == null || v.isEmpty) return 'Please enter your email';
-            if (!v.contains('@')) return 'Enter valid email';
+            if (!v.contains('@')) return 'Enter a valid email';
             return null;
           },
         ),
@@ -72,17 +95,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  /// Builds the external label + password field with visibility toggle
+  // Builds the password field with visibility toggle and validation
   Widget _buildPasswordField(ColorScheme cs) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Password',
-          style: GoogleFonts.raleway(
-            textStyle: const TextStyle(color: Colors.black, fontSize: 16),
-          ),
-        ),
+        Text('Password', style: TextStyle(fontSize: 18)),
         const SizedBox(height: 8),
         TextFormField(
           controller: _passwordController,
@@ -92,12 +110,15 @@ class _LoginPageState extends State<LoginPage> {
             prefixIcon: const Icon(Icons.lock_outline),
             filled: true,
             fillColor: cs.surface,
+            errorText: _passwordError, // Displays error message if any
             suffixIcon: IconButton(
               icon: Icon(
                 _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
               ),
               onPressed: () {
-                setState(() => _isPasswordVisible = !_isPasswordVisible);
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
               },
             ),
           ),
@@ -110,20 +131,14 @@ class _LoginPageState extends State<LoginPage> {
           },
         ),
         const SizedBox(height: 4),
-        Text(
-          'Password must be at least 6 characters.',
-          style: GoogleFonts.raleway(
-            textStyle: const TextStyle(color: Color(0xff6A6A6A), fontSize: 14),
-          ),
-        ),
       ],
     );
   }
 
-  /// Builds the login button
+  // Builds the login button, showing a loading spinner when in loading state
   Widget _buildLoginButton(ColorScheme cs) {
     return ElevatedButton(
-      onPressed: _isLoading ? null : _login,
+      onPressed: _isLoading ? null : _login, // Disable when loading
       style: ElevatedButton.styleFrom(
         backgroundColor: cs.primary,
         foregroundColor: cs.onPrimary,
@@ -137,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  /// Builds the “No account? Sign Up” prompt
+  // Builds the "No account? Sign Up" prompt
   Widget _buildSignupText(ColorScheme cs) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -179,26 +194,15 @@ class _LoginPageState extends State<LoginPage> {
           key: _formKey,
           child: ListView(
             children: [
-              const SizedBox(height: 24),
-
-              // Main header
-              Text(
-                'CyberSage',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineLarge?.copyWith(
-                  color: cs.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              // Subtitle
-              Text(
-                'Welcome to CyberSage',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.displayMedium?.copyWith(
-                  color: cs.onSurface,
+              // CYBERSAGE LOGO
+              Container(
+                height: 240,
+                margin: const EdgeInsets.only(bottom: 80, top: 40),
+                child: Center(
+                  child: Image.asset(
+                    'cybersage_no_person.png',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
 
@@ -210,6 +214,21 @@ class _LoginPageState extends State<LoginPage> {
               _buildPasswordField(cs),
 
               const SizedBox(height: 30),
+
+              // Display general error if any
+              if (_generalError != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(
+                    _generalError!,
+                    style: TextStyle(
+                      color: Colors.red[700],
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
 
               // Login button
               _buildLoginButton(cs),

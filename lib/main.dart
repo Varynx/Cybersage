@@ -1,31 +1,49 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
-import 'quiz_page.dart';
-import 'signup.dart';
-import 'home_page.dart';
-import 'result_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    // Initialize Firebase
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+// App pages/screens
+import 'login_page.dart';
+import 'signup.dart';
+import 'quiz_page.dart';
+import 'lesson_page.dart';
+import 'home_page.dart';
+import 'result_page.dart';
 
-  //Runs app
+void main() async {
+  // Ensure widgets are bound before Firebase initializes
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase with generated options
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Launch the app
   runApp(const MyApp());
 }
 
+// Root widget of the app
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  //  Root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Set initial route
+      initialRoute: '/',
+
+      // Define app-wide routes
+      routes: {
+        '/': (context) => const LoginPage(),
+        '/signup': (context) => Signup(),
+        '/quiz': (context) => const QuizPage(),
+        '/lesson': (context) => LessonPage(),
+        '/home': (context) => HomePage(),
+        '/results': (context) => ResultsPage(),
+      },
+
+      // Apply custom theme with accessibility considerations
       theme: ThemeData(
+        // Custom color scheme matching FGCU colors
         colorScheme: ColorScheme(
           primary: const Color(0xFF006B53), // FGCU Green
           onPrimary: Colors.white,
@@ -38,7 +56,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
 
-        // ENHANCED TEXT THEME FOR ELDERLY READABILITY
+        // Text styles optimized for readability (elderly-friendly)
         textTheme: const TextTheme(
           displayLarge: TextStyle(
             fontSize: 28.0,
@@ -55,13 +73,13 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
-          headlineMedium: TextStyle(
-            fontSize: 22.0,
+          headlineLarge: TextStyle(
+            fontSize: 28.0,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
-          headlineLarge: TextStyle(
-            fontSize: 28.0,
+          headlineMedium: TextStyle(
+            fontSize: 22.0,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
@@ -69,7 +87,7 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 18.0, color: Colors.black87),
         ),
 
-        // INCREASED BUTTON SIZE FOR BETTER ACCESSIBILITY
+        // Larger buttons for improved touch targets
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -78,55 +96,41 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
-        // INCREASED INPUT FIELD SIZE FOR BETTER ACCESSIBILITY
+        // Enhanced input fields for better visibility and accessibility
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: Colors.white, // Prevent fields from becoming transparent
-          contentPadding: const EdgeInsets.all(16),
+          fillColor: Colors.white, // Ensures inputs aren't transparent
+          contentPadding: const EdgeInsets.all(
+            16,
+          ), // Padding inside input fields
           labelStyle: const TextStyle(fontSize: 18.0),
           hintStyle: const TextStyle(fontSize: 18.0),
           errorStyle: const TextStyle(fontSize: 16.0, color: Colors.red),
 
-          // Ensure icons (prefix/suffix) remain visible
+          // Icon visibility settings
           iconColor: Colors.black87,
           prefixIconColor: Colors.black87,
           suffixIconColor: Colors.black87,
 
-          // Default border when field is enabled but not focused
+          // Border styles for various states
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: const BorderSide(color: Colors.grey, width: 1.5),
           ),
-
-          // Border when the field is focused
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(color: const Color(0xFF006B53), width: 2),
+            borderSide: const BorderSide(color: Color(0xFF006B53), width: 2),
           ),
-
-          // Border when there is a validation error
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
           ),
-
-          // Border when field is both focused and in error
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: const BorderSide(color: Colors.redAccent, width: 2),
           ),
         ),
       ),
-
-      // REPLACED 'home' PROPERTY WITH ROUTES
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const LoginPage(),
-        '/quiz': (context) => const QuizPage(),
-        '/signup': (context) => Signup(),
-        '/home': (context) => HomePage(),
-        '/results' : (context) => ResultsPage(),
-      },
     );
   }
 }
