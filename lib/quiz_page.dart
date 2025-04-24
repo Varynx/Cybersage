@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // List of cybersecurity quiz questions for seniors
 final List<Map<String, dynamic>> quizQuestions = [
@@ -104,6 +106,8 @@ final List<Map<String, dynamic>> quizQuestions = [
   },
 ];
 
+
+
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
 
@@ -112,12 +116,39 @@ class QuizPage extends StatefulWidget {
 }
 
 class QuizPageState extends State<QuizPage> {
-  // Track current question index
   int currentQuestionIndex = 0;
   String? selectedAnswer;
   int? selectedAnswerIndex;
   bool isAnswerSubmitted = false;
   int score = 0;
+
+  // Store the user's score in Firestore
+  Future<void> _storeUserScore(int score) async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        await FirebaseFirestore.instance.collection('quiz_results').add({
+          'user_id': currentUser.uid,
+          'score': score,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      print("Error storing score: $e");
+    }
+  }
+
+  void previousQuestion() {
+  if (currentQuestionIndex > 0) {
+    setState(() {
+      currentQuestionIndex--;
+      selectedAnswer = null;
+      selectedAnswerIndex = null;
+      isAnswerSubmitted = false;
+    });
+  }
+}
+
 
   void nextQuestion() {
     if (currentQuestionIndex < quizQuestions.length - 1) {
@@ -128,19 +159,9 @@ class QuizPageState extends State<QuizPage> {
         isAnswerSubmitted = false;
       });
     } else {
-      // Show quiz completion dialog
+      // Store score when quiz is completed
+      _storeUserScore(score);
       showQuizCompletionDialog();
-    }
-  }
-
-  void previousQuestion() {
-    if (currentQuestionIndex > 0) {
-      setState(() {
-        currentQuestionIndex--;
-        selectedAnswer = null;
-        selectedAnswerIndex = null;
-        isAnswerSubmitted = false;
-      });
     }
   }
 
@@ -150,31 +171,22 @@ class QuizPageState extends State<QuizPage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Quiz Completed!', 
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
+          title: const Text('Quiz Completed!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                'Your Score: $score out of ${quizQuestions.length}',
-                style: const TextStyle(fontSize: 20),
-              ),
+              Text('Your Score: $score out of ${quizQuestions.length}', style: const TextStyle(fontSize: 20)),
               const SizedBox(height: 20),
-              const Text(
-                'Thank you for completing the cybersecurity quiz!',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-              ),
+              const Text('Thank you for completing the cybersecurity quiz!', textAlign: TextAlign.center, style: TextStyle(fontSize: 18)),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/home');
               },
-              child: const Text('Return to Login', style: TextStyle(fontSize: 18)),
+              child: const Text('Return to Home', style: TextStyle(fontSize: 18)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -208,7 +220,6 @@ class QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Get current question data
     final currentQuestion = quizQuestions[currentQuestionIndex];
     final List<String> options = List<String>.from(currentQuestion['options']);
 
@@ -225,16 +236,12 @@ class QuizPageState extends State<QuizPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Question number indicator
                 Container(
-                 padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 2,
-                    ),
+                    border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
                   ),
                   child: Text(
                     'Question ${currentQuestionIndex + 1} of ${quizQuestions.length}',
@@ -242,57 +249,37 @@ class QuizPageState extends State<QuizPage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                
                 const SizedBox(height: 30),
-                
-                // Question text with larger font
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 2,
-                    ),
+                    border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
                   ),
                   child: Text(
                     currentQuestion['question'],
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                
                 const SizedBox(height: 30),
-                
-                // Instructions for elderly users
-                const Text(
-                  'Select one answer below:',
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
-                ),
-                
+                const Text('Select one answer below:', style: TextStyle(fontSize: 18), textAlign: TextAlign.center),
                 const SizedBox(height: 20),
-                
-                // Options with larger buttons and enhanced contrast
                 ...options.asMap().entries.map((entry) {
                   int index = entry.key;
                   String option = entry.value;
-                  
+
                   Color backgroundColor = Theme.of(context).colorScheme.surface;
                   Color textColor = Theme.of(context).colorScheme.onSurface;
                   Color borderColor = Colors.grey.shade300;
-                  
+
                   if (selectedAnswerIndex == index) {
                     backgroundColor = Theme.of(context).colorScheme.secondary;
                     textColor = Theme.of(context).colorScheme.onSecondary;
                     borderColor = Theme.of(context).colorScheme.secondary;
                   }
-                  
-                  // If answer is submitted, show correct/incorrect indication
+
                   if (isAnswerSubmitted) {
                     if (index == currentQuestion['correctAnswerIndex']) {
                       backgroundColor = Colors.green;
@@ -304,7 +291,7 @@ class QuizPageState extends State<QuizPage> {
                       borderColor = Colors.red;
                     }
                   }
-                  
+
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: ElevatedButton(
@@ -318,35 +305,23 @@ class QuizPageState extends State<QuizPage> {
                         backgroundColor: backgroundColor,
                         foregroundColor: textColor,
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        side: BorderSide(
-                          color: borderColor,
-                          width: 2,
-                        ),
+                        side: BorderSide(color: borderColor, width: 2),
                         disabledBackgroundColor: backgroundColor,
                         disabledForegroundColor: textColor,
                       ),
-                      child: Text(
-                        option,
-                        style: const TextStyle(fontSize: 20),
-                      ),
+                      child: Text(option, style: const TextStyle(fontSize: 20)),
                     ),
                   );
                 }),
-                
                 const SizedBox(height: 30),
-                
-                // Navigation and Submit buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Previous Question button
                     TextButton.icon(
                       onPressed: currentQuestionIndex > 0 ? previousQuestion : null,
                       icon: const Icon(Icons.arrow_back),
                       label: const Text('Previous', style: TextStyle(fontSize: 18)),
                     ),
-                    
-                    // Submit or Next button
                     if (!isAnswerSubmitted)
                       ElevatedButton(
                         onPressed: selectedAnswerIndex != null ? submitAnswer : null,
@@ -366,15 +341,12 @@ class QuizPageState extends State<QuizPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                         ),
                         child: Text(
-                          currentQuestionIndex < quizQuestions.length - 1 
-                            ? 'Next Question' 
-                            : 'See Results',
-                          style: const TextStyle(fontSize: 18)
+                          currentQuestionIndex < quizQuestions.length - 1 ? 'Next Question' : 'See Results',
+                          style: const TextStyle(fontSize: 18),
                         ),
                       ),
                   ],
                 ),
-                
                 const SizedBox(height: 16),
               ],
             ),
