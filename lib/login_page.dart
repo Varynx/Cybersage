@@ -200,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                 margin: const EdgeInsets.only(bottom: 80, top: 40),
                 child: Center(
                   child: Image.asset(
-                    'cybersage_no_person.png',
+                    "assets/cybersage_no_person.png",
                     fit: BoxFit.contain,
                   ),
                 ),
