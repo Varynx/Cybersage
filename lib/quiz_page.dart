@@ -1,49 +1,30 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 // List of cybersecurity quiz questions for seniors
 final List<Map<String, dynamic>> quizQuestions = [
   {
-    'question': 'What is "phishing"?',
+    'question': 'A pop-up window appears on your device while browsing the internet, claiming that your device is infected with a virus,' 
+    ' and to call the number on your screen to help remove the virus. Should you:',
     'options': [
-      'A hobby activity involving catching fish', 
-      'An attempt by scammers to trick you into giving personal information by pretending to be a trustworthy organization', 
+      'Call the number and follow their directions to help you remove the virus.', 
+      'Ignore and close the message. This is how scam callers find victims.', 
       'A computer virus that damages your files', 
       'A method of fixing computer problems remotely'
     ],
     'correctAnswerIndex': 1,
   },
   {
-    'question': 'If you receive an email from your bank asking you to click a link to verify your account information, what should you do?',
+    'question': '15.	What should you do if you suspect that you may have given sensitive information to a potential scammer?',
     'options': [
-      'Click the link and enter your information immediately', 
-      'Reply to the email with your account number', 
-      'Do not click the link, instead call your bank directly using the number on your card or statement', 
-      'Forward the email to friends to warn them'
-    ],
-    'correctAnswerIndex': 2,
-  },
-  {
-    'question': 'Which of these is a sign that an email might be a scam?',
-    'options': [
-      'It\'s from someone you know and contains normal conversation', 
-      'It has urgent language demanding immediate action', 
-      'It has the company\'s correct logo', 
-      'It addresses you by your full name'
+      'Ignore it and assume there will be no consquences.', 
+      'Contact the proper authorities based on the information you have given.', 
+      'Alert the scammer that you are aware of the situation.', 
+      'Give false information to the scammer to trick them.'
     ],
     'correctAnswerIndex': 1,
   },
   {
-    'question': 'What is a "strong password"?',
-    'options': [
-      'A simple word that\'s easy to remember', 
-      'Your name followed by your birth year', 
-      'A combination of upper and lowercase letters, numbers, and symbols', 
-      'The same password you use for all websites'
-    ],
-    'correctAnswerIndex': 2,
-  },
-  {
-    'question': 'What should you do if someone calls claiming to be from Microsoft or Apple saying there\'s a problem with your computer?',
+    'question': 'What should you do if someone calls claiming to be from Microsoft claiming there\'s a problem with your computer?',
     'options': [
       'Give them remote access to your computer', 
       'Provide your credit card to pay for their support', 
@@ -53,36 +34,16 @@ final List<Map<String, dynamic>> quizQuestions = [
     'correctAnswerIndex': 2,
   },
   {
-    'question': 'Which of these is a safe way to share sensitive documents?',
+    'question': 'You notice a suspicious charge on your credit card statement from an unknown online store. How should you respond?',
     'options': [
-      'Posting them on social media', 
-      'Using secure, encrypted email or file-sharing services', 
-      'Sending them as email attachments to everyone', 
-      'Using public WiFi to send them quickly'
-    ],
-    'correctAnswerIndex': 1,
-  },
-  {
-    'question': 'What is "two-factor authentication"?',
-    'options': [
-      'Having two different passwords for the same account', 
-      'An extra security step that requires both a password and a temporary code', 
-      'Logging in twice to make sure the system recognizes you', 
-      'Having two people verify your identity'
-    ],
-    'correctAnswerIndex': 1,
-  },
-  {
-    'question': 'If a loved one sends you a message saying they\'re stranded overseas and need money urgently, what should you do first?',
-    'options': [
-      'Send money immediately through wire transfer', 
-      'Purchase gift cards and send the codes as requested', 
-      'Contact them directly through a different method to verify it\'s really them', 
-      'Share your bank account details so they can access your funds'
+      'Ignore the charge, and assume it is a mistake and will be corrected', 
+      'Make a payment to avoid any late payment fees and investigate at a later time.', 
+      'Call the company that issued the charge and report the charge.', 
+      'Ask a family member if they made the purchase.'
     ],
     'correctAnswerIndex': 2,
   },
-  {
+ {
     'question': 'What information is generally safe to share on social media?',
     'options': [
       'Your full birth date including year', 
@@ -93,14 +54,45 @@ final List<Map<String, dynamic>> quizQuestions = [
     'correctAnswerIndex': 2,
   },
   {
-    'question': 'If you receive a text message saying you\'ve won a prize and need to click a link to claim it, what should you do?',
+    'question': 'The following email is sent to you claiming that an unknown user has accessed your Facebook account. How should you respond? ',
     'options': [
-      'Click the link immediately to claim your prize', 
-      'Delete the message - this is likely a scam', 
-      'Reply with your personal information', 
-      'Forward it to everyone in your contacts'
+      'Forward the email to your friends and family to warn them of possible messages from an impostor using your account.', 
+      'Click Report the User to report on this suspicious activity', 
+      'Ignore the email, and verify the activity by logging into Facebook using the official website or app.', 
+      'Reply to the email for further support from the support team.'
+    ],
+    'correctAnswerIndex': 2,
+  },
+  {
+    'question': 'The following email has been sent to your inbox claiming that an invoice of'
+    ' \$320 has been charged on your PayPal account. How could you verify the validity of the email?',
+    'options': [
+      'Click on the View and Pay button within the email to quickly get more details about the charge.', 
+      'Manually head to PayPal\'s official website or app to check if the invoice is legitimate.', 
+      'Reply to the email asking for more information about the invoice.', 
+      'Call the number given in the notes for more information.'
     ],
     'correctAnswerIndex': 1,
+  },
+  {
+    'question': '10.	What is a key sign that an email might be a phishing attempt?',
+    'options': [
+      'The email is vague and creates a sense of urgency.', 
+      'The email contains a phone number for customer service', 
+      'The email is lengthy and well written with a proper email address.', 
+      'The email contains an attachment.'
+    ],
+    'correctAnswerIndex': 0,
+  },
+  {
+    'question': 'Look at the following email. What are some signs that this is a phishing attempt?',
+    'options': [
+      'There is little explanation about the attachment.', 
+      'The sender email address is a random combination of letters', 
+      'A sense of urgency is made with the claim of your service being suspended.', 
+      'All of the above.'
+    ],
+    'correctAnswerIndex': 3,
   },
 ];
 
@@ -149,6 +141,7 @@ class QuizPageState extends State<QuizPage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
+        //this sets up the alert Dialog pop-up when the user has completed the quiz
         return AlertDialog(
           title: const Text('Quiz Completed!', 
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -170,11 +163,11 @@ class QuizPageState extends State<QuizPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushReplacementNamed(context, '/');
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, '/home');
               },
-              child: const Text('Return to Login', style: TextStyle(fontSize: 18)),
+              child: const Text('Return to Home', style: TextStyle(fontSize: 18)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -187,7 +180,7 @@ class QuizPageState extends State<QuizPage> {
                   score = 0;
                 });
               },
-              child: const Text('Try Again', style: TextStyle(fontSize: 18)),
+              child: const Text('Try Again.', style: TextStyle(fontSize: 18)),
             ),
           ],
         );
